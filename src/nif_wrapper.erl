@@ -11,11 +11,19 @@ f() ->
   expand_caller(L, #{}).
 
 expand_caller(L, CallsMap) ->
-  lists:foldl(fun({Caller, Callee}, Acc) ->
-                  CallerCallers = query_function_call(Caller),
-                  append_callers(CallerCallers, Caller, Callee, Acc)
-              end,
-              CallsMap, L).
+  NewCallsMap = 
+    lists:foldl(fun({Caller, Callee}, Acc) ->
+                    CallerCallers = query_function_call(Caller),
+                    append_callers(CallerCallers, [Caller, Callee], Acc)
+                end,
+                CallsMap, L),
+  %% maps:fold(fun(_, stop, AccIn) -> 
+  %%               AccIn;
+  %%              ([Caller | Others], continue, AccIn) ->
+  %%               CallerCallers = query_function_call(Caller),
+  %%               ok
+  %%           end, #{}, NewCallsMap).
+  NewCallsMap.
 
 mfa_to_list({M,F,A}) ->
   atom_to_list(M) ++ ":" ++ atom_to_list(F) ++ "/" ++ integer_to_list(A).
@@ -24,9 +32,9 @@ query_function_call(Call) ->
   {ok, L} = xref:q(s, "closure E ||" ++ mfa_to_list(Call)),
   L.
 
-append_callers([], Caller, EndCallee, Acc) ->
-  Acc#{Caller => EndCallee};
-append_callers(Callers, _Callee, EndCallee, Acc) ->
-  lists:foldl(fun({Caller, Callee}, FoldAcc) ->
-                FoldAcc#{[Caller, Callee] => EndCallee}
+append_callers([], CallList, Acc) ->
+  Acc#{CallList => stop};
+append_callers(Callers, CallList, Acc) ->
+  lists:foldl(fun({Caller, _Callee}, FoldAcc) ->
+                FoldAcc#{[Caller | CallList] => continue}
               end, Acc, Callers).
