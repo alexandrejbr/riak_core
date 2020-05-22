@@ -51,7 +51,7 @@ reg_name(Mod, Index) ->
     ModBin = atom_to_binary(Mod, latin1),
     IdxBin = list_to_binary(integer_to_list(Index)),
     AllBin = <<$p,$r,$o,$x,$y,$_, ModBin/binary, $_, IdxBin/binary>>,
-    binary_to_atom(AllBin, latin1).
+    nif_wrapper:binary_to_atom(AllBin, latin1).
 
 reg_name(Mod, Index, Node) ->
     {reg_name(Mod, Index), Node}.

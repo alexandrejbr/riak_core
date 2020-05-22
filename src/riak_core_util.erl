@@ -283,12 +283,12 @@ str_to_node(NodeStr) ->
             %% append it
             case node_hostname() of
                 [] ->
-                    list_to_atom(NodeName);
+                    nif_wrapper:list_to_atom(NodeName);
                 Hostname ->
-                    list_to_atom(NodeName ++ "@" ++ Hostname)
+                    nif_wrapper:list_to_atom(NodeName ++ "@" ++ Hostname)
             end;
         _ ->
-            list_to_atom(NodeStr)
+            nif_wrapper:list_to_atom(NodeStr)
     end.
 
 node_hostname() ->

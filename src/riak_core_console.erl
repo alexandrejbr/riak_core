@@ -400,7 +400,7 @@ datetime_str({{Year, Month, Day}, {Hour, Min, Sec}}) ->
 stage_leave([]) ->
     stage_leave(node());
 stage_leave([NodeStr]) ->
-    stage_leave(list_to_atom(NodeStr));
+    stage_leave(nif_wrapper:list_to_atom(NodeStr));
 stage_leave(Node) ->
     try
         case riak_core_claimant:leave_member(Node) of
@@ -427,7 +427,7 @@ stage_leave(Node) ->
     end.
 
 stage_remove([NodeStr]) ->
-    stage_remove(list_to_atom(NodeStr));
+    stage_remove(nif_wrapper:list_to_atom(NodeStr));
 stage_remove(Node) ->
     try
         case riak_core_claimant:remove_member(Node) of
@@ -453,7 +453,7 @@ stage_remove(Node) ->
     end.
 
 stage_replace([NodeStr1, NodeStr2]) ->
-    stage_replace(list_to_atom(NodeStr1), list_to_atom(NodeStr2)).
+    stage_replace(nif_wrapper:list_to_atom(NodeStr1), nif_wrapper:list_to_atom(NodeStr2)).
 stage_replace(Node1, Node2) ->
     try
         case riak_core_claimant:replace(Node1, Node2) of
@@ -487,7 +487,7 @@ stage_replace(Node1, Node2) ->
     end.
 
 stage_force_replace([NodeStr1, NodeStr2]) ->
-    stage_force_replace(list_to_atom(NodeStr1), list_to_atom(NodeStr2)).
+    stage_force_replace(nif_wrapper:list_to_atom(NodeStr1), nif_wrapper:list_to_atom(NodeStr2)).
 stage_force_replace(Node1, Node2) ->
     try
         case riak_core_claimant:force_replace(Node1, Node2) of
@@ -807,7 +807,7 @@ transfer_limit([LimitStr]) ->
             ok
     end;
 transfer_limit([NodeStr, LimitStr]) ->
-    Node = list_to_atom(NodeStr),
+    Node = nif_wrapper:list_to_atom(NodeStr),
     {Valid, Limit} = check_limit(LimitStr),
     case Valid of
         false ->
@@ -962,7 +962,7 @@ add_source([Users, CIDR, Source | Options]) ->
     %% Unicode note: atoms are constrained to latin1 until R18, so our
     %% sources are as well
     try riak_core_security:add_source(Unames, parse_cidr(CIDR),
-                                  list_to_atom(string:to_lower(Source)),
+                                  nif_wrapper:list_to_atom(string:to_lower(Source)),
                                   parse_options(Options)) of
         ok ->
             io:format("Successfully added source~n"),
@@ -1527,7 +1527,7 @@ replace_part(H) ->
 	[C|_] when C >= $0, C =< $9 ->
 	    try list_to_integer(H)
 	    catch
-		error:_ -> list_to_atom(H)
+		error:_ -> nif_wrapper:list_to_atom(H)
 	    end;
-	_ -> list_to_atom(H)
+	_ -> nif_wrapper:list_to_atom(H)
     end.

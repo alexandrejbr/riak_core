@@ -131,7 +131,7 @@ start_fold(TargetNode, Module, {Type, Opts}, ParentPid, SslOpts) ->
          %% just do a sync, newer nodes will decode the module name.
          %% After 0.12.0 the calls can be switched to use PT_MSG_SYNC
          %% and PT_MSG_CONFIGURE
-         VMaster = list_to_atom(atom_to_list(Module) ++ "_master"),
+         VMaster = nif_wrapper:list_to_atom(atom_to_list(Module) ++ "_master"),
          ModBin = atom_to_binary(Module, utf8),
          Msg = <<?PT_MSG_OLDSYNC:8,ModBin/binary>>,
          ok = TcpMod:send(Socket, Msg),

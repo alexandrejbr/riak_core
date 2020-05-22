@@ -159,7 +159,7 @@ process_message(?PT_MSG_OLDSYNC, MsgData, State=#state{sock=Socket,
                                                        tcp_mod=TcpMod}) ->
     TcpMod:send(Socket, <<?PT_MSG_OLDSYNC:8,"sync">>),
     <<VNodeModBin/binary>> = MsgData,
-    VNodeMod = binary_to_atom(VNodeModBin, utf8),
+    VNodeMod = nif_wrapper:binary_to_atom(VNodeModBin, utf8),
     State#state{vnode_mod=VNodeMod};
 process_message(?PT_MSG_SYNC, _MsgData, State=#state{sock=Socket,
                                                      tcp_mod=TcpMod}) ->

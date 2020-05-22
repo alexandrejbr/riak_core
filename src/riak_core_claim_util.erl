@@ -620,7 +620,7 @@ prop_adjacency_summary() ->
     ?FORALL({OwnersSeed, S},
             {non_empty(longer_list(40, largeint())), ?LET(X, int(), 1 + abs(X))},
             begin
-                Owners = [list_to_atom("n"++integer_to_list(1 + (abs(I) rem S))) || I <- OwnersSeed],
+                Owners = [nif_wrapper:list_to_atom("n"++integer_to_list(1 + (abs(I) rem S))) || I <- OwnersSeed],
                 AM = adjacency_matrix(Owners),
                 AS = summarize_am(AM),
 

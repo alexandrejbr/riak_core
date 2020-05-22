@@ -27,7 +27,7 @@ parse_transform(Forms, _) ->
 	false ->
 	    Forms;
 	Str ->
-	    transform(Forms, list_to_atom(Str))
+	    transform(Forms, nif_wrapper:list_to_atom(Str))
     end.
 
 transform([{function,L,prefix,0,[_]}|T], Pfx) ->

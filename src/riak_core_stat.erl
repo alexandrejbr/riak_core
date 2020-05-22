@@ -271,10 +271,10 @@ vnodeq_aggregate(Service, MQLs0) ->
        {max, lists:nth(Len, MQLs)}, {total, Total}]}].
 
 vnodeq_atom(Service, Desc) ->
-    binary_to_atom(<<(atom_to_binary(Service, latin1))/binary, Desc/binary>>, latin1).
+    nif_wrapper:binary_to_atom(<<(atom_to_binary(Service, latin1))/binary, Desc/binary>>, latin1).
 
 nwp_name_atom(Atom) ->
-    binary_to_atom(<< <<"node_worker_pool_">>/binary,
+    nif_wrapper:binary_to_atom(<< <<"node_worker_pool_">>/binary,
                       (atom_to_binary(Atom, latin1))/binary,
                       <<"_total">>/binary>>, latin1).
 

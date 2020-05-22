@@ -70,11 +70,11 @@
 -define(ETS_TABLE_NAME, riak_core_throttles).
 -define(ETS_TABLE_OPTIONS, [set, named_table, public]).
 
--define(THROTTLE_KEY(Key), list_to_atom("throttle_" ++ atom_to_list(Key))).
+-define(THROTTLE_KEY(Key), nif_wrapper:list_to_atom("throttle_" ++ atom_to_list(Key))).
 -define(THROTTLE_LIMITS_KEY(Key),
-        list_to_atom("throttle_limits_" ++ atom_to_list(Key))).
+        nif_wrapper:list_to_atom("throttle_limits_" ++ atom_to_list(Key))).
 -define(THROTTLE_ENABLED_KEY(Key),
-        list_to_atom("throttle_enabled_" ++ atom_to_list(Key))).
+        nif_wrapper:list_to_atom("throttle_enabled_" ++ atom_to_list(Key))).
 
 %% @doc Initialize the throttling subsystem. Should be called just once during
 %% startup, although calling multiple times will not have any negative

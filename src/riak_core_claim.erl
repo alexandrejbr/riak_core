@@ -1311,7 +1311,7 @@ find_biggest_hole_test() ->
 %% partitions
 -spec gen_diag(pos_integer(), pos_integer()) -> [Node::atom()].
 gen_diag(RingSize, NodeCount) ->
-    Nodes = [list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(1, NodeCount)],
+    Nodes = [nif_wrapper:list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(1, NodeCount)],
     {HeadNode, RestNodes} = {hd(Nodes), tl(Nodes)},
     R0 = riak_core_ring:fresh(RingSize, HeadNode),
     RAdded = lists:foldl(fun(Node, Racc) ->
@@ -1346,10 +1346,10 @@ eqc_check(File, Prop) ->
     eqc:check(Prop, CE).
 
 test_nodes(Count) ->
-    [node() | [list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(1, Count-1)]].
+    [node() | [nif_wrapper:list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(1, Count-1)]].
 
 test_nodes(Count, StartNode) ->
-    [list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(StartNode, StartNode + Count)].
+    [nif_wrapper:list_to_atom(lists:concat(["n_", N])) || N <- lists:seq(StartNode, StartNode + Count)].
 
 claim_ensures_unique_nodes_v2_test_() ->
     Prop = eqc:testing_time(30, ?QC_OUT(prop_claim_ensures_unique_nodes_v2())),
@@ -1739,7 +1739,7 @@ prop_take_idxs() ->
             end).
 
 tnode(I) ->
-    list_to_atom("n"++integer_to_list(I)).
+    nif_wrapper:list_to_atom("n"++integer_to_list(I)).
 
 %% Check that no node gained more than it wanted to take
 %% Check that none of the nodes took more partitions than allowed

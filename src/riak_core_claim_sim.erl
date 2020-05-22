@@ -306,7 +306,7 @@ dryrun1(Ring00, CmdsL, #simopts{wants = Wants,
       end, Ring0, CmdsL).
 
 sim_node(N) ->
-    list_to_atom(lists:flatten(io_lib:format("sim~b@127.0.0.1",[N]))).
+    nif_wrapper:list_to_atom(lists:flatten(io_lib:format("sim~b@127.0.0.1",[N]))).
     
 command({join, Num}, Ring) when is_integer(Num) ->
     command({join, 1, Num}, Ring);

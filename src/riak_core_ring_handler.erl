@@ -131,7 +131,7 @@ ensure_vnodes_started({App,Mod}, Ring) ->
     spawn_link(fun() ->
     %%                 Use a registered name as a lock to prevent the same
     %%                 vnode module from being started twice.
-                       RegName = list_to_atom(
+                       RegName = nif_wrapper:list_to_atom(
                                    "riak_core_ring_handler_ensure_"
                                    ++ atom_to_list(Mod)),
                        try erlang:register(RegName, self())
@@ -153,7 +153,7 @@ ensure_vnodes_started({App,Mod}, Ring) ->
                        end,
 
                        %% Mark the service as up.
-                       SupName = list_to_atom(atom_to_list(App) ++ "_sup"),
+                       SupName = nif_wrapper:list_to_atom(atom_to_list(App) ++ "_sup"),
                        SupPid = erlang:whereis(SupName),
                        case riak_core:health_check(App) of
                            undefined ->

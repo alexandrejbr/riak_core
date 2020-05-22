@@ -68,7 +68,7 @@ setup_mockring1() ->
     riak_core_ring_manager:set_ring_global(Ring).
 
 fake_ring(Size, NumNodes) ->
-    ManyNodes = [list_to_atom("dev" ++ integer_to_list(X) ++ "@127.0.0.1")
+    ManyNodes = [nif_wrapper:list_to_atom("dev" ++ integer_to_list(X) ++ "@127.0.0.1")
                  || _ <- lists:seq(0, Size div NumNodes),
                     X <- lists:seq(1, NumNodes)],
     Nodes = lists:sublist(ManyNodes, Size),
