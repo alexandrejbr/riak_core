@@ -21,3 +21,4 @@ data/*
 test/*.beam
 log/*
 core_vnode_eqc.log
+src/*.beam
